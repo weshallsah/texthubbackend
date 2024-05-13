@@ -3,8 +3,6 @@ import cors from "cors";
 
 import { initializeApp } from "firebase/app";
 
-import websocket from "websocket";
-
 const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
     authDomain: process.env.AUTH_DOMAIN,
@@ -91,16 +89,6 @@ app.get("/", (req, res) => {
 
 app.use("/api", userRoute);
 
-
-const WebSocketServer = websocket.server;
-
-const ws = new WebSocketServer({
-    httpServer: server
-});
-
-ws.on("connection", (client) => { 
-    console.log("ws client connected",client.id);
-});
 
 export {
     server,
