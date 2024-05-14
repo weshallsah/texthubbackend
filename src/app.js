@@ -57,10 +57,11 @@ socket.on("connection", (client) => {
     console.log("client is connected", client.id);
     client.on("chat", (payload) => {
         console.log(payload);
-        client.join(payload.sender);
-        socket.in(payload.reciver).emit("chat", payload);
+        socket.emit("message",payload);
+        // client.join(payload.sender);
+        // socket.in(payload.reciver).emit("chat", payload);
     });
-})
+});
 
 app.use((req, res, next) => {
     // console.log("inside use state");
