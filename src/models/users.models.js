@@ -3,22 +3,21 @@ import mongoose from "mongoose";
 
 const userSchema = mongoose.Schema(
     {
-        Phone: {
-            type: Number,
-            require: true,
+        phone: {
+            type: String,
+            required: true,
             unique: true,
+            trim: true,
+            index: true,
         },
         name: {
-            type: String
+            type: String,
+            trim: true,
         },
         avatar: {
-            type: String
-        },
-        email: {
             type: String,
-            unique: true,
+            trim: true,
         },
-        
     },
     { timestamps: true }
 )

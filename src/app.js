@@ -1,7 +1,9 @@
 import express from "express";
 import cors from "cors";
-
+import dotenv from "dotenv";
 import { initializeApp } from "firebase/app";
+
+dotenv.config({ path: ".env" });
 
 const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
@@ -14,9 +16,8 @@ const firebaseConfig = {
     measurementId: process.env.MEASUREMENT_ID
 };
 
-const firebase = initializeApp(firebaseConfig);
+const fireconfig = initializeApp(firebaseConfig);
 
-// const auth = firebase;
 
 const app = express();
 app.use(
@@ -52,14 +53,24 @@ const server = http.createServer(app,
 );
 
 const socket = new Server(server);
-
+let phone = [];
+let message = [];
 socket.on("connection", (client) => {
     console.log("client is connected", client.id);
+    client.on("joinchat", (payload) => {
+        phone.push(payload.phone);
+        client.join(payload.phone);
+    });
     client.on("chat", (payload) => {
-        console.log(payload);
-        socket.emit("message",payload);
-        // client.join(payload.sender);
-        // socket.in(payload.reciver).emit("chat", payload);
+        const isphone = phone.includes(payload.phone);
+        console.log(isphone);
+        if (isphone) {
+            console.log(payload);
+            socket.in(payload.phone).emit("message", payload.message);
+        }
+        else {
+            message.push(payload);
+        }
     });
 });
 
@@ -95,4 +106,5 @@ export {
     server,
     app,
     socket,
+    fireconfig,
 };

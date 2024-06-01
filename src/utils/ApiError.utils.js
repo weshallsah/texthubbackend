@@ -1,5 +1,5 @@
 class ApiError {
-    ApiError(statusCode, message, error) {
+    constructor(statusCode, message, error) {
         this.statusCode = statusCode;
         this.message = message;
         this.error = error;
